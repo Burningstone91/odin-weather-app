@@ -4,10 +4,12 @@ import * as api from "./api";
 import * as dom from "./dom";
 
 const city = document.getElementById("location");
+const searchBtn = document.querySelector(".search-btn");
 
 async function getWeatherData() {
   const weatherData = await api.getWeatherForecast(city.value);
   dom.renderWeatherData(weatherData);
+  city.value = "";
 }
 
 // initial load
@@ -17,6 +19,9 @@ getWeatherData();
 city.addEventListener("keydown", (e) => {
   if (e.key === "Enter") {
     getWeatherData();
-    city.value = "";
   }
+});
+
+searchBtn.addEventListener("click", () => {
+  getWeatherData();
 });
