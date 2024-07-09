@@ -17,7 +17,56 @@
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ``, "",{"version":3,"sources":[],"names":[],"mappings":"","sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, `* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.search-bar {
+  position: absolute;
+  right: 24px;
+  padding: 12px;
+}
+
+.current {
+  padding: 32px;
+}
+
+.location {
+  font-size: 28px;
+}
+
+.temp {
+  font-size: 48px;
+  margin-top: 16px;
+}
+
+.current > .condition-icon {
+  height: 120px;
+}
+
+.forecast {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 32px;
+  width: 100%;
+  position: absolute;
+  bottom: 24px;
+}
+
+.day-name {
+  font-size: 18px;
+}
+
+.max-temp {
+  font-size: 24px;
+}
+
+.min-temp {
+  font-size: 12px;
+}`, "",{"version":3,"sources":["webpack://./src/styles.css"],"names":[],"mappings":"AAAA;EACE,sBAAsB;EACtB,SAAS;EACT,UAAU;AACZ;;AAEA;EACE,kBAAkB;EAClB,WAAW;EACX,aAAa;AACf;;AAEA;EACE,aAAa;AACf;;AAEA;EACE,eAAe;AACjB;;AAEA;EACE,eAAe;EACf,gBAAgB;AAClB;;AAEA;EACE,aAAa;AACf;;AAEA;EACE,aAAa;EACb,mBAAmB;EACnB,8BAA8B;EAC9B,aAAa;EACb,WAAW;EACX,kBAAkB;EAClB,YAAY;AACd;;AAEA;EACE,eAAe;AACjB;;AAEA;EACE,eAAe;AACjB;;AAEA;EACE,eAAe;AACjB","sourcesContent":["* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\n.search-bar {\n  position: absolute;\n  right: 24px;\n  padding: 12px;\n}\n\n.current {\n  padding: 32px;\n}\n\n.location {\n  font-size: 28px;\n}\n\n.temp {\n  font-size: 48px;\n  margin-top: 16px;\n}\n\n.current > .condition-icon {\n  height: 120px;\n}\n\n.forecast {\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n  padding: 32px;\n  width: 100%;\n  position: absolute;\n  bottom: 24px;\n}\n\n.day-name {\n  font-size: 18px;\n}\n\n.max-temp {\n  font-size: 24px;\n}\n\n.min-temp {\n  font-size: 12px;\n}"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -497,24 +546,199 @@ var update = injectStylesIntoStyleTag_default()(styles/* default */.A, options);
 
        /* harmony default export */ const src_styles = (styles/* default */.A && styles/* default */.A.locals ? styles/* default */.A.locals : undefined);
 
-;// CONCATENATED MODULE: ./src/index.js
+;// CONCATENATED MODULE: ./src/api.js
+const apiKey = "68c8d7c1ff284c1dacd200606240507";
 
+async function getWeatherForecast(city) {
+  const url = `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&days=8&q=${city}`;
 
-const url =
-  "https://api.weatherapi.com/v1/current.json?key=68c8d7c1ff284c1dacd200606240507&q=";
-const city = "netstal";
-
-async function getHumidity() {
   try {
-    const response = await fetch(url + city, { mode: "cors" });
+    const response = await fetch(url, { mode: "cors" });
     const weatherData = await response.json();
-    console.log(weatherData.current.humidity);
+    const data = processData(weatherData);
+    return data;
   } catch (error) {
     console.log(error);
   }
 }
 
-getHumidity();
+function processData(weatherData) {
+  const data = {
+    current: {
+      location: weatherData.location.name + ", " + weatherData.location.country,
+      date: weatherData.location.localtime,
+      condition_text: weatherData.current.condition.text,
+      condition_icon: weatherData.current.condition.icon,
+      temp: weatherData.current.temp_c,
+      feels_like: weatherData.current.feelslike_c,
+      humidity: weatherData.current.humidity,
+      wind_speed: weatherData.current.wind_kph,
+    },
+    forecast: {
+      d1: {
+        day: weatherData.forecast.forecastday[1].date,
+        max_temp: weatherData.forecast.forecastday[1].day.maxtemp_c,
+        min_temp: weatherData.forecast.forecastday[1].day.mintemp_c,
+        condition_icon: weatherData.forecast.forecastday[1].day.condition.icon,
+      },
+      d2: {
+        day: weatherData.forecast.forecastday[2].date,
+        max_temp: weatherData.forecast.forecastday[2].day.maxtemp_c,
+        min_temp: weatherData.forecast.forecastday[2].day.mintemp_c,
+        condition_icon: weatherData.forecast.forecastday[2].day.condition.icon,
+      },
+      d3: {
+        day: weatherData.forecast.forecastday[3].date,
+        max_temp: weatherData.forecast.forecastday[3].day.maxtemp_c,
+        min_temp: weatherData.forecast.forecastday[3].day.mintemp_c,
+        condition_icon: weatherData.forecast.forecastday[3].day.condition.icon,
+      },
+      d4: {
+        day: weatherData.forecast.forecastday[4].date,
+        max_temp: weatherData.forecast.forecastday[4].day.maxtemp_c,
+        min_temp: weatherData.forecast.forecastday[4].day.mintemp_c,
+        condition_icon: weatherData.forecast.forecastday[4].day.condition.icon,
+      },
+      d5: {
+        day: weatherData.forecast.forecastday[5].date,
+        max_temp: weatherData.forecast.forecastday[5].day.maxtemp_c,
+        min_temp: weatherData.forecast.forecastday[5].day.mintemp_c,
+        condition_icon: weatherData.forecast.forecastday[5].day.condition.icon,
+      },
+      d6: {
+        day: weatherData.forecast.forecastday[6].date,
+        max_temp: weatherData.forecast.forecastday[6].day.maxtemp_c,
+        min_temp: weatherData.forecast.forecastday[6].day.mintemp_c,
+        condition_icon: weatherData.forecast.forecastday[6].day.condition.icon,
+      },
+      d7: {
+        day: weatherData.forecast.forecastday[7].date,
+        max_temp: weatherData.forecast.forecastday[7].day.maxtemp_c,
+        min_temp: weatherData.forecast.forecastday[7].day.mintemp_c,
+        condition_icon: weatherData.forecast.forecastday[7].day.condition.icon,
+      },
+    },
+  };
+  return data;
+}
+
+
+
+;// CONCATENATED MODULE: ./src/utils.js
+function getDayName(dateStr) {
+  const date = new Date(dateStr);
+  return date.toLocaleDateString("en-US", { weekday: "long" });
+}
+
+function getTime(localtimeStr) {
+  const date = new Date(localtimeStr);
+  return date.toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
+function getFullDate(dateStr) {
+  const date = new Date(dateStr);
+  return date.toLocaleDateString("en-US", {
+    weekday: "long",
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+}
+
+
+
+;// CONCATENATED MODULE: ./src/dom.js
+
+
+function renderWeatherData(weatherData) {
+  // ##############################
+  // Render current values
+  // ##############################
+  const conditionText = document.querySelector(".current > .condition-text");
+  const location = document.querySelector(".current > .location");
+  const date = document.querySelector(".current > .date");
+  const time = document.querySelector(".current > .time");
+  const conditionIcon = document.querySelector(".current > .condition-icon");
+  const temp = document.querySelector(".current > .temp");
+  const feelsLike = document.querySelector(".current > .feels-like");
+  const humidity = document.querySelector(".current > .humidity");
+  const windSpeed = document.querySelector(".current > .wind-speed");
+
+  conditionText.textContent = weatherData.current.condition_text;
+  location.textContent = weatherData.current.location;
+  date.textContent = getFullDate(weatherData.current.date);
+  time.textContent = getTime(weatherData.current.date);
+  conditionIcon.src = "https:" + weatherData.current.condition_icon;
+  temp.textContent = weatherData.current.temp + " °C";
+  feelsLike.textContent =
+    "Feels Like: " + weatherData.current.feels_like + " °C";
+  humidity.textContent = "Humidity: " + weatherData.current.humidity + " %";
+  windSpeed.textContent =
+    "Wind Speed: " + weatherData.current.wind_speed + " km/h";
+
+  // ##############################
+  // Render forecast values
+  // ##############################
+  for (let i = 1; i < 8; i++) {
+    // render day name
+    const dayName = document.querySelector(
+      ".forecast-d-" + CSS.escape(i) + " > .day-name"
+    );
+    dayName.textContent = getDayName(weatherData.forecast["d" + i].day);
+
+    // render condition icon
+    const conditionIcon = document.querySelector(
+      ".forecast-d-" + CSS.escape(i) + " > .condition-icon"
+    );
+    conditionIcon.src = "https:" + weatherData.forecast["d" + i].condition_icon;
+
+    // render max temp
+    const maxTemp = document.querySelector(
+      ".forecast-d-" + CSS.escape(i) + " > .max-temp"
+    );
+    maxTemp.textContent = weatherData.forecast["d" + i].max_temp + " °C";
+
+    // render min temp
+    const minTemp = document.querySelector(
+      ".forecast-d-" + CSS.escape(i) + " > .min-temp"
+    );
+    minTemp.textContent = weatherData.forecast["d" + i].min_temp + " °C";
+  }
+}
+
+
+
+;// CONCATENATED MODULE: ./src/index.js
+
+
+//import * as utils from "./utils";
+
+
+const city = document.getElementById("location");
+const searchBtn = document.querySelector(".search-btn");
+
+async function getWeatherData() {
+  const weatherData = await getWeatherForecast(city.value);
+  renderWeatherData(weatherData);
+  city.value = "";
+}
+
+// initial load
+getWeatherData();
+
+// change location
+city.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    getWeatherData();
+  }
+});
+
+searchBtn.addEventListener("click", () => {
+  getWeatherData();
+});
 
 /******/ })()
 ;
