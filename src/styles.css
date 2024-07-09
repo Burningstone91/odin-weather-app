@@ -1,0 +1,50 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.search-bar {
+  position: absolute;
+  right: 24px;
+  padding: 12px;
+}
+
+.current {
+  padding: 32px;
+}
+
+.location {
+  font-size: 28px;
+}
+
+.temp {
+  font-size: 48px;
+  margin-top: 16px;
+}
+
+.current > .condition-icon {
+  height: 120px;
+}
+
+.forecast {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 32px;
+  width: 100%;
+  position: absolute;
+  bottom: 24px;
+}
+
+.day-name {
+  font-size: 18px;
+}
+
+.max-temp {
+  font-size: 24px;
+}
+
+.min-temp {
+  font-size: 12px;
+}

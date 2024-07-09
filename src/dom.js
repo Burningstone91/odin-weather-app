@@ -20,9 +20,11 @@ function renderWeatherData(weatherData) {
   time.textContent = utils.getTime(weatherData.current.date);
   conditionIcon.src = "https:" + weatherData.current.condition_icon;
   temp.textContent = weatherData.current.temp + " °C";
-  feelsLike.textContent = weatherData.current.feels_like + " °C";
-  humidity.textContent = weatherData.current.humidity + " %";
-  windSpeed.textContent = weatherData.current.wind_speed + " km/h";
+  feelsLike.textContent =
+    "Feels Like: " + weatherData.current.feels_like + " °C";
+  humidity.textContent = "Humidity: " + weatherData.current.humidity + " %";
+  windSpeed.textContent =
+    "Wind Speed: " + weatherData.current.wind_speed + " km/h";
 
   // ##############################
   // Render forecast values
