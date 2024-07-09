@@ -1,8 +1,13 @@
+import * as utils from "./utils";
+
 function renderWeatherData(weatherData) {
   // ##############################
   // Render current values
   // ##############################
   const conditionText = document.querySelector(".current > .condition-text");
+  const location = document.querySelector(".current > .location");
+  const date = document.querySelector(".current > .date");
+  const time = document.querySelector(".current > .time");
   const conditionIcon = document.querySelector(".current > .condition-icon");
   const temp = document.querySelector(".current > .temp");
   const feelsLike = document.querySelector(".current > .feels-like");
@@ -10,11 +15,14 @@ function renderWeatherData(weatherData) {
   const windSpeed = document.querySelector(".current > .wind-speed");
 
   conditionText.textContent = weatherData.current.condition_text;
+  location.textContent = weatherData.current.location;
+  date.textContent = utils.getFullDate(weatherData.current.date);
+  time.textContent = utils.getTime(weatherData.current.date);
   conditionIcon.src = "https:" + weatherData.current.condition_icon;
-  temp.textContent = weatherData.current.temp;
-  feelsLike.textContent = weatherData.current.feels_like;
-  humidity.textContent = weatherData.current.humidity;
-  windSpeed.textContent = weatherData.current.wind_speed;
+  temp.textContent = weatherData.current.temp + " °C";
+  feelsLike.textContent = weatherData.current.feels_like + " °C";
+  humidity.textContent = weatherData.current.humidity + " %";
+  windSpeed.textContent = weatherData.current.wind_speed + " km/h";
 
   // ##############################
   // Render forecast values
@@ -24,7 +32,7 @@ function renderWeatherData(weatherData) {
     const dayName = document.querySelector(
       ".forecast-d-" + CSS.escape(i) + " > .day-name"
     );
-    dayName.textContent = weatherData.forecast["d" + i].day;
+    dayName.textContent = utils.getDayName(weatherData.forecast["d" + i].day);
 
     // render condition icon
     const conditionIcon = document.querySelector(
@@ -36,13 +44,13 @@ function renderWeatherData(weatherData) {
     const maxTemp = document.querySelector(
       ".forecast-d-" + CSS.escape(i) + " > .max-temp"
     );
-    maxTemp.textContent = weatherData.forecast["d" + i].max_temp;
+    maxTemp.textContent = weatherData.forecast["d" + i].max_temp + " °C";
 
     // render min temp
     const minTemp = document.querySelector(
       ".forecast-d-" + CSS.escape(i) + " > .min-temp"
     );
-    minTemp.textContent = weatherData.forecast["d" + i].min_temp;
+    minTemp.textContent = weatherData.forecast["d" + i].min_temp + " °C";
   }
 }
 
